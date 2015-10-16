@@ -1,0 +1,21 @@
+version 1.0;
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns xnm = "http://xml.juniper.net/xnm/1.1/xnm";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+import "../import/junos.xsl";
+match configuration {
+       var $ccomment = $junos-context/commit-context/commit-comment;
+       var $version = version;        if( jcs:empty ($ccomment)) {
+               var $annotate = "committer:" _ $user;
+               <change> {
+                       <junos:comment> $annotate;
+                       <version> $version;
+               }
+       } else {
+               var $annotate = "committer:" ​ $user ​ ";comment:" _ $ccomment;
+               <change> {
+                       <junos:comment> $annotate;
+                       <version> $version;
+               }
+       }
+} 
