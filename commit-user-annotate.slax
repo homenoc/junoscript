@@ -7,10 +7,11 @@ import "../import/junos.xsl";
 
 match configuration {
         var $ccomment = $junos-context/commit-context/commit-comment;
+        var $cuser = $junos-context/user-context/login-name;
         var $version = version;
 
         if( jcs:empty ($ccomment)) {
-                var $annotate = "committer:" _ $user;
+                var $annotate = "committer:" _ $cuser;
                 <change> {
                         <junos:comment> $annotate;
                         <version> $version;
@@ -23,3 +24,4 @@ match configuration {
                 }
         }
 }
+
