@@ -17,11 +17,10 @@ match configuration {
                         <version> $version;
                 }
         } else {
-                var $annotate = "committer:" _ $user _ ";comment:" _ $ccomment;
+                var $annotate = "committer:" _ $cuser _ ";comment:" _ $ccomment;
                 <change> {
                         <junos:comment> $annotate;
                         <version> $version;
                 }
         }
 }
-
