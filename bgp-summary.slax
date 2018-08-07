@@ -12,7 +12,7 @@ match / {
     var $format = "%-24jcs%-8jcs%-16jcs%-16jcs%-8jcs%-8jcs%-24jcs%-16jcs%-16jcs%jcs";
 
     <output> jcs:printf($format,
-      "Peer", "AS", "InPkt", "OuPkt", "OutQ", "Flaps", "Last Up/Dwn", "State", "Group", "Description |#Active/Received/Accepted/Damped...");
+      "Peer", "AS", "InPkt", "OutPkt", "OutQ", "Flaps", "Last Up/Dwn", "State", "Group", "Description |#Active/Received/Accepted/Damped...");
 
     <bgp-information> {
       for-each($neighbors/bgp-peer){
