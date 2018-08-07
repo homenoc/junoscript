@@ -1,0 +1,33 @@
+version 1.0;
+ns junos = "http://xml.juniper.net/junos/*/junos";
+ns xnm = "http://xml.juniper.net/xnm/1.1/xnm";
+ns jcs = "http://xml.juniper.net/junos/commit-scripts/1.0";
+import "../import/junos.xsl";
+
+
+match / {
+  <op-script-results> {
+    var $neighbors = jcs:invoke(<command> 'show bgp neighbor');
+    var $summary = jcs:invoke(<command> 'show bgp summary');
+    var $format = "%-24jcs%-16jcs%-16jcs%-16jcs%-8jcs%-8jcs%-24jcs%-16jcs%-16jcs%jcs";
+
+    <output> jcs:printf($format,
+      "Peer", "AS", "InPkt", "OuPkt", "OutQ", "Flaps", "Last Up/Dwn", "State", "Group", "Description |#Active/Received/Accepted/Damped...");
+
+    <bgp-information> {
+      for-each($neighbors/bgp-peer){
+        var $peer-address = jcs:split("[+]",peer-address)[1];
+        var $elapsed = $summary//bgp-peer/peer-address[starts-with(.,$peer-address)]/../elapsed-time ;
+
+        <output> jcs:printf($format,
+          $peer-address,peer-as, input-octets, output-octets, bgp-output-queue/count, flap-count, $elapsed, peer-state, peer-group, description);
+
+        for-each(bgp-rib) {
+          if (!jcs:empty(name)) {
+            <output> "  " _ name _ ": " _ active-prefix-count _ "/" _ received-prefix-count _ "/" _ accepted-prefix-count _ "/" _ suppressed-prefix-count ;
+          }
+        }
+      }
+    }
+  }
+}
