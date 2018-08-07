@@ -9,7 +9,7 @@ match / {
   <op-script-results> {
     var $neighbors = jcs:invoke(<command> 'show bgp neighbor');
     var $summary = jcs:invoke(<command> 'show bgp summary');
-    var $format = "%-24jcs%-8jcs%-16jcs%-16jcs%-8jcs%-8jcs%-24jcs%-16jcs%-16jcs%jcs";
+    var $format = "%-24s%-8s%-12s%-12s%-8s%-8s%-16s%-16s%-20s%s";
 
     <output> jcs:printf($format,
       "Peer", "AS", "InPkt", "OutPkt", "OutQ", "Flaps", "Last Up/Dwn", "State", "Group", "Description |#Active/Received/Accepted/Damped...");
